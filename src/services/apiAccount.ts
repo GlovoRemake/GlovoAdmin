@@ -47,6 +47,18 @@ export const apiAccount = createApi({
                     throw new Error("Помилка перетворення данних");
                 }
             }
+        }),
+        logout: builder.mutation<void, void>({
+            query: () => {
+                try {
+                    return {
+                        method: "POST",
+                        url: "/Account/Logout",
+                    }
+                } catch {
+                    throw new Error("Помилка перетворення данних");
+                }
+            }
         })
     })
 })
@@ -54,4 +66,5 @@ export const apiAccount = createApi({
 export const { 
     useLoginMutation,  
     useGetProfileQuery,
-    useUpdateProfileMutation } = apiAccount;
+    useUpdateProfileMutation,
+    useLogoutMutation } = apiAccount;

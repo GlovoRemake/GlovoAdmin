@@ -1,8 +1,9 @@
 import { motion } from "motion/react";
-import { Navigate, Outlet, useLocation } from "react-router";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "@/store/hooks";
 import { selectIsAuthenticated } from "@/store/slices/authSlice";
+import { useGetProfileQuery } from "@/services/apiAccount";
 
 const loginImageSrc = "/login-image.png";
 
@@ -10,8 +11,11 @@ const FADE_DURATION = 200;
 const IMAGE_DURATION = 1000;
 
 const AuthLayout = () => {
+    const navigate = useNavigate();
     const location = useLocation();
     const isAuthenticated = useAppSelector(selectIsAuthenticated);
+
+    const {data: user, isLoading: isUserLoading} = useGetProfileQuery();
 
     const isRegister = location.pathname.includes("/register");
 
@@ -20,6 +24,13 @@ const AuthLayout = () => {
     );
 
     const [contentVisible, setContentVisible] = useState(true);
+    
+    useEffect(() => {
+        if (user == null || isUserLoading) return;
+        else {
+            navigate("/");
+        }
+    }, [isUserLoading]);
 
     // Коли URL змінився
     useEffect(() => {
@@ -131,7 +142,7 @@ const AuthLayout = () => {
                                         duration: 0.3,
                                     }}
                                 >
-                                    Glovo Partners
+                                    Glovo <br />Admin
                                 </motion.p>
                             </motion.div>
 
