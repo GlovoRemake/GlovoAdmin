@@ -1,4 +1,4 @@
-import { useGetProfileQuery } from "@/services/apiAccount";
+import { apiAccount, useGetProfileQuery } from "@/services/apiAccount";
 import { Button } from "@/components/ui/button.tsx";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { LogoutSquare01Icon } from "@hugeicons/core-free-icons";
@@ -8,19 +8,20 @@ import { logout as logoutAction } from "@/store/slices/authSlice";
 
 const Navbar = () => {
     const { data: user } = useGetProfileQuery();
+    const [ logout ] = apiAccount.useLogoutMutation();
 
     const dispatch = useAppDispatch();
 
     const handleLogout = async () => {
-        // try {
-        //     await logout().unwrap();
-        // } catch (error) {
-        //     console.error("Logout error:", error);
-        // } finally {
-        dispatch(logoutAction());
-        // dispatch(apiPartner.util.resetApiState());
-        redirectToLogin();
-        // }
+        try {
+            await logout().unwrap();
+        } catch (error) {
+            console.error("Logout error:", error);
+        } finally {
+            dispatch(logoutAction());
+            dispatch(apiAccount.util.resetApiState());
+            redirectToLogin();
+        }
     };
 
     return (
