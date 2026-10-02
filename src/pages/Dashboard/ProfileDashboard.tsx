@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Spinner } from "@/components/ui/spinner.tsx";
 import { useGetProfileQuery, useUpdateProfileMutation } from "@/services/apiAccount";
-import type { IPartnerUpdate } from "@/types/account/IPartnerUpdate";
+import type { IAccountUpdate } from "@/types/account/IAccountUpdate";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ArrowLeft, CheckCircle2, Mail, Pencil, Phone, UserRound, X } from "lucide-react";
@@ -14,7 +14,7 @@ const ProfileDashboard = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [isUpdated, setIsUpdated] = useState(false);
     const navigate = useNavigate();
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<IPartnerUpdate>();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<IAccountUpdate>();
 
     useEffect(() => {
         if (profile) {
@@ -52,7 +52,7 @@ const ProfileDashboard = () => {
     const fullName = `${profile.firstName} ${profile.lastName}`.trim();
     const initials = `${profile.firstName[0] ?? ""}${profile.lastName[0] ?? ""}`.toUpperCase();
 
-    const onSubmit = async (data: IPartnerUpdate) => {
+    const onSubmit = async (data: IAccountUpdate) => {
         try {
             await updateProfile(data).unwrap();
             await refetch();
